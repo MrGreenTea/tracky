@@ -1,19 +1,16 @@
 package com.example.jonas.tracky;
 
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
-import android.widget.ImageView;
 
-import com.example.jonas.tracky.tracking.ActivitesDbHelper;
 import com.example.jonas.tracky.tracking.ActivitiesDatabase;
 import com.example.jonas.tracky.tracking.Activity;
-import com.example.jonas.tracky.tracking.ActivityContract;
 
 import java.util.List;
 
@@ -30,8 +27,8 @@ public class ButtonAdapter extends BaseAdapter {
         mContext = c;
         database = new ActivitiesDatabase(mContext);
         database.addActivity(new Activity("Test1", "Test", Color.BLUE));
-        database.addActivity(new Activity("Test2", "Test", Color.RED));
-        database.addActivity(new Activity("Test3", "Test", Color.GREEN));
+        database.addActivity(new Activity("Test2", "Test", Color.GREEN));
+        database.addActivity(new Activity("Test3", "Test", Color.RED));
         activities = database.getAllActivities();
     }
 
@@ -48,20 +45,27 @@ public class ButtonAdapter extends BaseAdapter {
     }
 
     // create a new ImageView for each item referenced by the Adapter
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         Button button;
         if (convertView == null) {
             // if it's not recycled, initialize some attributes
             button = new Button(mContext);
-            button.setLayoutParams(new GridView.LayoutParams(85, 85));
             button.setPadding(8, 8, 8, 8);
+            button.setHeight(button.getMeasuredWidth());
         } else {
             button = (Button) convertView;
         }
 
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Clicked " + position, Snackbar.LENGTH_SHORT)
+                        .setAction("Action", null).show();
+            }
+        });
         Activity activity = activities.get(position);
-        button.setBackgroundColor(activity.color);
-        button.setText(activity.name);
+        button.setBackgroundColor(activity.getColor());
+        button.setText(activity.getName());
         return button;
     }
 

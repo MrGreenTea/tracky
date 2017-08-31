@@ -1,7 +1,5 @@
 package com.example.jonas.tracky.tracking;
 
-import android.graphics.Color;
-import android.graphics.drawable.Icon;
 import android.support.annotation.ColorInt;
 
 /**
@@ -9,14 +7,26 @@ import android.support.annotation.ColorInt;
  */
 
 public class Activity {
-    public String name;
-    public String category;
+    private String name;
+    private String category;
     @ColorInt
-    public int color;
+    private int color;
 
     public Activity (String name, String category, int color) {
         this.name = name;
         this.category = category;
         this.color = color;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public int getColor() {
+        return color;
     }
 }

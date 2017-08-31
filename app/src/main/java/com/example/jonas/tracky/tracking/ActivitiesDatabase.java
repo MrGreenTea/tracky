@@ -13,29 +13,27 @@ import java.util.List;
  */
 
 public class ActivitiesDatabase {
-    private SQLiteDatabase writeDatabase;
-    private SQLiteDatabase readDatabase;
+    private SQLiteDatabase database;
 
     public ActivitiesDatabase (Context context) {
         ActivitesDbHelper helper = new ActivitesDbHelper(context);
-        this.readDatabase = helper.getReadableDatabase();
-        this.writeDatabase = helper.getWritableDatabase();
+        this.database = helper.getWritableDatabase();
     }
 
     public List<Activity> getAllActivities() {
         String[] projection = {
-                ActivityContract.Activities.COLUMN_NAME,
-                ActivityContract.Activities.COLUMN_CATEGORY,
-                ActivityContract.Activities.COLUMN_COLOR
+                ActivitiesContract.Activities.COLUMN_NAME,
+                ActivitiesContract.Activities.COLUMN_CATEGORY,
+                ActivitiesContract.Activities.COLUMN_COLOR
         };
 
         String selection = "";
         String[] selectionArgs = {};
 
-        String sortOrder = ActivityContract.Activities.COLUMN_NAME + " DESC";
+        String sortOrder = ActivitiesContract.Activities.COLUMN_NAME + " DESC";
 
-        Cursor cursor = this.readDatabase.query(
-                ActivityContract.Activities.TABLE_NAME,
+        Cursor cursor = this.database.query(
+                ActivitiesContract.Activities.TABLE_NAME,
                 projection,
                 selection,
                 selectionArgs,
@@ -46,9 +44,9 @@ public class ActivitiesDatabase {
 
         List<Activity> activities = new ArrayList<>();
         while (cursor.moveToNext()) {
-            String name = cursor.getString(cursor.getColumnIndexOrThrow(ActivityContract.Activities.COLUMN_NAME));
-            String category = cursor.getString(cursor.getColumnIndexOrThrow(ActivityContract.Activities.COLUMN_CATEGORY));
-            int color = cursor.getInt(cursor.getColumnIndexOrThrow(ActivityContract.Activities.COLUMN_COLOR));
+            String name = cursor.getString(cursor.getColumnIndexOrThrow(ActivitiesContract.Activities.COLUMN_NAME));
+            String category = cursor.getString(cursor.getColumnIndexOrThrow(ActivitiesContract.Activities.COLUMN_CATEGORY));
+            int color = cursor.getInt(cursor.getColumnIndexOrThrow(ActivitiesContract.Activities.COLUMN_COLOR));
 
             Activity activity = new Activity(name, category, color);
             activities.add(activity);
@@ -60,10 +58,10 @@ public class ActivitiesDatabase {
 
     public void addActivity(Activity activity) {
         ContentValues values = new ContentValues();
-        values.put(ActivityContract.Activities.COLUMN_NAME, activity.name);
-        values.put(ActivityContract.Activities.COLUMN_CATEGORY, activity.category);
-        values.put(ActivityContract.Activities.COLUMN_COLOR, activity.color);
+        values.put(ActivitiesContract.Activities.COLUMN_NAME, activity.getName());
+        values.put(ActivitiesContract.Activities.COLUMN_CATEGORY, activity.getCategory());
+        values.put(ActivitiesContract.Activities.COLUMN_COLOR, activity.getColor());
 
-        writeDatabase.insert(ActivityContract.Activities.TABLE_NAME, null, values);
+        database.insert(ActivitiesContract.Activities.TABLE_NAME, null, values);
     }
 }

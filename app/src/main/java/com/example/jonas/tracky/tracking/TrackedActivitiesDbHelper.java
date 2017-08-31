@@ -5,27 +5,23 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 /**
- * Created by jonas on 29.08.17.
+ * Created by jonas on 31.08.17.
  */
 
-
-
-public class ActivitesDbHelper extends SQLiteOpenHelper {
-    // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 3;
-    public static final String DATABASE_NAME = "Activities.db";
-
+public class TrackedActivitiesDbHelper extends SQLiteOpenHelper {
+    public static final int DATABASE_VERSION = 1;
+    public static final String DATABASE_NAME = "TrackedActivities.db";
 
     private static final String SQL_CREATE_ENTRIES =
-            "CREATE TABLE " + ActivitiesContract.Activities.TABLE_NAME + " (" +
-                    ActivitiesContract.Activities.COLUMN_NAME + " TEXT PRIMARY KEY, " +
-                    ActivitiesContract.Activities.COLUMN_CATEGORY + " TEXT, " +
-                    ActivitiesContract.Activities.COLUMN_COLOR + " INTEGER)";
+            "CREATE TABLE " + TrackedActivitiesContract.TrackedActivities.TABLE_NAME + " (" +
+                    TrackedActivitiesContract.TrackedActivities._ID + " INTEGER PRIMARY KEY, " +
+                    TrackedActivitiesContract.TrackedActivities.COLUMN_ACTIVITY+ " TEXT, " +
+                    TrackedActivitiesContract.TrackedActivities.COLUMN_END_TIME + " INTEGER)";
 
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + ActivitiesContract.Activities.TABLE_NAME;
 
-    public ActivitesDbHelper(Context context) {
+    public TrackedActivitiesDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
     public void onCreate(SQLiteDatabase db) {
